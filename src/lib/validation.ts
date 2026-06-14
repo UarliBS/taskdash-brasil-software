@@ -4,7 +4,7 @@ import { z } from "zod";
 export const registerSchema = z.object({
   name: z.string().trim().min(1, "Informe o nome completo."),
   email: z.string().trim().email("Informe um e-mail valido.").toLowerCase(),
-  password: z.string().min(8, "A senha deve ter no minimo 8 caracteres."),
+  password: z.string().trim().min(8, "A senha deve ter no minimo 8 caracteres."),
 });
 
 export const loginSchema = z.object({
