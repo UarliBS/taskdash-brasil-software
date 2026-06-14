@@ -1,0 +1,356 @@
+# Documento de Regras de Negócio e Requisitos Funcionais
+
+## Sistema de Gerenciamento de Tarefas
+
+**Projeto:** Desafio Técnico – Programa de Trainee Brasil Software
+**Versão:** 1.0
+**Data:** Junho/2026
+
+---
+
+# 1. Objetivo do Sistema
+
+Desenvolver uma aplicação web para gerenciamento de tarefas que permita aos usuários organizar atividades, acompanhar progresso, filtrar informações e visualizar indicadores de desempenho através de um dashboard.
+
+---
+
+# 2. Regras de Negócio
+
+## RN001 – Cadastro de Usuários
+
+O sistema deve permitir que novos usuários realizem cadastro informando:
+
+* Nome completo
+* E-mail
+* Senha
+
+### Validações
+
+* O e-mail deve ser único.
+* O e-mail deve possuir formato válido.
+* A senha deve possuir no mínimo 8 caracteres.
+* Não será permitido cadastro com campos obrigatórios vazios.
+
+---
+
+## RN002 – Autenticação
+
+Somente usuários autenticados poderão acessar as funcionalidades internas do sistema.
+
+### Regras
+
+* O login será realizado através de e-mail e senha.
+* Senhas devem ser armazenadas de forma criptografada.
+* Usuários não autenticados devem ser redirecionados para a tela de login.
+
+---
+
+## RN003 – Recuperação de Acesso
+
+O sistema poderá disponibilizar recuperação de senha por e-mail.
+
+### Regras
+
+* O link de redefinição deve possuir validade temporária.
+* O token deve ser único para cada solicitação.
+
+---
+
+## RN004 – Cadastro de Tarefas
+
+Usuários autenticados poderão criar tarefas.
+
+### Cada tarefa deve conter:
+
+* Título
+* Descrição
+* Data de vencimento
+* Prioridade
+* Status
+
+---
+
+## RN005 – Prioridades
+
+Uma tarefa deve possuir uma prioridade.
+
+### Valores permitidos:
+
+* Baixa
+* Média
+* Alta
+
+---
+
+## RN006 – Status da Tarefa
+
+Toda tarefa deve possuir um status.
+
+### Valores permitidos:
+
+* Pendente
+* Em andamento
+* Concluída
+
+---
+
+## RN007 – Atualização de Tarefas
+
+O usuário poderá editar qualquer informação de uma tarefa criada.
+
+### Restrições
+
+* Apenas tarefas existentes podem ser alteradas.
+* Alterações devem refletir imediatamente na listagem.
+
+---
+
+## RN008 – Exclusão de Tarefas
+
+O usuário poderá excluir tarefas.
+
+### Regras
+
+* Deve existir confirmação antes da exclusão.
+* Após a confirmação, a tarefa não poderá ser exibida nas consultas.
+
+---
+
+## RN009 – Histórico de Alterações
+
+Toda modificação realizada em uma tarefa deverá ser registrada.
+
+### Informações mínimas
+
+* Data da alteração
+* Hora da alteração
+* Tipo da alteração
+* Usuário responsável
+
+---
+
+## RN010 – Pesquisa de Tarefas
+
+Usuários poderão pesquisar tarefas utilizando texto livre.
+
+### Regras
+
+A pesquisa deve considerar:
+
+* Título
+* Descrição
+
+---
+
+## RN011 – Filtros
+
+O sistema deverá permitir filtrar tarefas por:
+
+* Status
+* Prioridade
+* Data de vencimento
+
+---
+
+## RN012 – Dashboard
+
+O sistema deverá exibir indicadores resumidos.
+
+### Indicadores mínimos
+
+* Total de tarefas cadastradas
+* Total de tarefas pendentes
+* Total de tarefas em andamento
+* Total de tarefas concluídas
+
+---
+
+## RN013 – Integridade dos Dados
+
+Não será permitido:
+
+* Criar tarefas sem título.
+* Criar tarefas sem status.
+* Criar tarefas sem prioridade.
+
+---
+
+# 3. Requisitos Funcionais
+
+## RF001 – Realizar Cadastro
+
+**Descrição:** Permitir que usuários criem uma conta.
+
+### Fluxo Principal
+
+1. Usuário acessa tela de cadastro.
+2. Informa nome, e-mail e senha.
+3. Sistema valida informações.
+4. Sistema cria a conta.
+
+---
+
+## RF002 – Realizar Login
+
+**Descrição:** Permitir autenticação no sistema.
+
+### Fluxo Principal
+
+1. Usuário informa e-mail.
+2. Usuário informa senha.
+3. Sistema valida credenciais.
+4. Sistema libera acesso.
+
+---
+
+## RF003 – Realizar Logout
+
+**Descrição:** Encerrar sessão do usuário.
+
+---
+
+## RF004 – Criar Tarefa
+
+**Descrição:** Permitir cadastro de nova tarefa.
+
+### Campos
+
+* Título
+* Descrição
+* Prioridade
+* Status
+* Data de vencimento
+
+---
+
+## RF005 – Listar Tarefas
+
+**Descrição:** Exibir todas as tarefas cadastradas pelo usuário.
+
+### Informações exibidas
+
+* Título
+* Status
+* Prioridade
+* Data de vencimento
+
+---
+
+## RF006 – Visualizar Detalhes da Tarefa
+
+**Descrição:** Permitir consulta completa de uma tarefa.
+
+---
+
+## RF007 – Editar Tarefa
+
+**Descrição:** Atualizar informações de uma tarefa existente.
+
+---
+
+## RF008 – Excluir Tarefa
+
+**Descrição:** Remover uma tarefa do sistema.
+
+---
+
+## RF009 – Alterar Status
+
+**Descrição:** Permitir mudança de status da tarefa.
+
+### Transições permitidas
+
+* Pendente → Em andamento
+* Em andamento → Concluída
+* Concluída → Em andamento (opcional)
+
+---
+
+## RF010 – Filtrar Tarefas
+
+**Descrição:** Aplicar filtros na listagem.
+
+### Filtros disponíveis
+
+* Status
+* Prioridade
+* Data de vencimento
+
+---
+
+## RF011 – Pesquisar Tarefas
+
+**Descrição:** Buscar tarefas através de palavras-chave.
+
+---
+
+## RF012 – Consultar Histórico
+
+**Descrição:** Exibir histórico de alterações realizadas em uma tarefa.
+
+---
+
+## RF013 – Visualizar Dashboard
+
+**Descrição:** Exibir indicadores consolidados.
+
+### Métricas
+
+* Quantidade de tarefas pendentes
+* Quantidade de tarefas em andamento
+* Quantidade de tarefas concluídas
+* Total geral de tarefas
+
+---
+
+# 4. Requisitos Não Funcionais
+
+## RNF001 – Desempenho
+
+O sistema deve responder às operações principais em até 2 segundos.
+
+---
+
+## RNF002 – Segurança
+
+* Senhas criptografadas utilizando bcrypt.
+* Rotas protegidas por autenticação.
+* Proteção contra acesso não autorizado.
+
+---
+
+## RNF003 – Usabilidade
+
+* Interface responsiva.
+* Compatível com desktop e dispositivos móveis.
+
+---
+
+## RNF004 – Disponibilidade
+
+O sistema deve estar disponível 24 horas por dia, exceto em períodos de manutenção.
+
+---
+
+## RNF005 – Manutenibilidade
+
+O código deve seguir boas práticas de desenvolvimento e organização.
+
+---
+
+# 5. Casos de Uso Principais
+
+| Código | Caso de Uso          |
+| ------ | -------------------- |
+| UC01   | Cadastrar Usuário    |
+| UC02   | Autenticar Usuário   |
+| UC03   | Criar Tarefa         |
+| UC04   | Editar Tarefa        |
+| UC05   | Excluir Tarefa       |
+| UC06   | Listar Tarefas       |
+| UC07   | Filtrar Tarefas      |
+| UC08   | Pesquisar Tarefas    |
+| UC09   | Consultar Histórico  |
+| UC10   | Visualizar Dashboard |
+
+---

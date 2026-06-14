@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: taskdash-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: taskdash
+      POSTGRES_PASSWORD: taskdash
+      POSTGRES_DB: taskdash
+    ports:
+      - "5432:5432"
+    volumes:
+      - taskdash_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U taskdash -d taskdash"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  taskdash_pg_data:
