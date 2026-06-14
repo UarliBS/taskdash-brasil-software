@@ -6,9 +6,9 @@ import { prisma } from "@/lib/prisma";
 import { parseDueDate, taskSchema } from "@/lib/validation";
 
 type RouteContext = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 const allowedStatusTransitions: Record<TaskStatus, TaskStatus[]> = {
@@ -19,6 +19,7 @@ const allowedStatusTransitions: Record<TaskStatus, TaskStatus[]> = {
 
 export async function GET(_request: Request, context: RouteContext) {
   const user = await getCurrentUser();
+  const { id } = await context.params;
 
   if (!user) {
     return jsonError("Acesso nao autorizado.", 401);
@@ -26,7 +27,7 @@ export async function GET(_request: Request, context: RouteContext) {
 
   const task = await prisma.task.findFirst({
     where: {
-      id: context.params.id,
+      id,
       userId: user.id,
       deletedAt: null,
     },
@@ -49,6 +50,7 @@ export async function GET(_request: Request, context: RouteContext) {
 
 export async function PATCH(request: Request, context: RouteContext) {
   const user = await getCurrentUser();
+  const { id } = await context.params;
 
   if (!user) {
     return jsonError("Acesso nao autorizado.", 401);
@@ -58,7 +60,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     const body = taskSchema.parse(await request.json());
     const existingTask = await prisma.task.findFirst({
       where: {
-        id: context.params.id,
+        id,
         userId: user.id,
         deletedAt: null,
       },
@@ -118,6 +120,7 @@ export async function PATCH(request: Request, context: RouteContext) {
 
 export async function DELETE(_request: Request, context: RouteContext) {
   const user = await getCurrentUser();
+  const { id } = await context.params;
 
   if (!user) {
     return jsonError("Acesso nao autorizado.", 401);
@@ -125,7 +128,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
 
   const existingTask = await prisma.task.findFirst({
     where: {
-      id: context.params.id,
+      id,
       userId: user.id,
       deletedAt: null,
     },

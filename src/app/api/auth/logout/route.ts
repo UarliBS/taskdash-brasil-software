@@ -1,6 +1,6 @@
 import { clearSession } from "@/lib/auth";
 
 export async function POST() {
-  clearSession();
+  await clearSession();
   return Response.json({ ok: true });
 }

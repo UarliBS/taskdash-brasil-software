@@ -68,12 +68,22 @@ npm run dev
 
 Acesse `http://localhost:3000`.
 
+Para validar a versao de producao local:
+
+```bash
+npm run build
+npm run start
+```
+
 ## Variaveis de Ambiente
 
 ```env
 DATABASE_URL="postgresql://taskdash:taskdash@localhost:5432/taskdash?schema=public"
 AUTH_SECRET="change-this-secret-before-production"
+AUTH_COOKIE_SECURE="false"
 ```
+
+Use `AUTH_COOKIE_SECURE="true"` apenas em ambientes HTTPS.
 
 ## Observacoes de Escopo
 

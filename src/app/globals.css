@@ -279,7 +279,7 @@ select:focus {
 }
 
 .workspace {
-  align-items: start;
+  align-items: flex-start;
   display: grid;
   gap: 1.2rem;
   grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
@@ -494,7 +494,7 @@ select:focus {
 }
 
 .history-item {
-  align-items: start;
+  align-items: flex-start;
   border: 1px solid var(--line);
   border-radius: 8px;
   display: flex;

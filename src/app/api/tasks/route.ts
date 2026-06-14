@@ -51,8 +51,14 @@ export async function GET(request: Request) {
     }
 
     if (filters.dueDate) {
+      const dueDate = parseDueDate(filters.dueDate);
+
+      if (!dueDate) {
+        throw new Error("Data de vencimento invalida.");
+      }
+
       where.dueDate = {
-        gte: parseDueDate(filters.dueDate),
+        gte: dueDate,
         lte: endOfDay(filters.dueDate),
       };
     }
