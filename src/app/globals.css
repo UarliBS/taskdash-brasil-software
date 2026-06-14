@@ -52,6 +52,9 @@ a {
   color: var(--primary);
   font-weight: 700;
   text-decoration: none;
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 h1,
@@ -103,6 +106,7 @@ select {
   outline: none;
   padding: 0.72rem 0.82rem;
   transition:
+    background-color 160ms ease,
     border-color 160ms ease,
     box-shadow 160ms ease;
 }
@@ -136,6 +140,7 @@ select:focus {
 .auth-story {
   border-right: 1px solid rgba(6, 78, 59, 0.18);
   box-shadow: 18px 0 55px rgba(6, 78, 59, 0.07);
+  animation: fade-slide-in 520ms ease both;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -228,10 +233,18 @@ select:focus {
   font-size: 0.9rem;
   font-weight: 800;
   gap: 0.7rem;
+  transition:
+    color 160ms ease,
+    transform 180ms ease;
 }
 
 .auth-checklist svg {
   color: #064e3b;
+}
+
+.auth-checklist div:hover {
+  color: #064e3b;
+  transform: translateX(3px);
 }
 
 .auth-preview {
@@ -244,6 +257,14 @@ select:focus {
   margin-top: 2rem;
   max-width: 430px;
   padding: 1rem;
+  transition:
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.auth-preview:hover {
+  box-shadow: 0 30px 84px rgba(6, 78, 59, 0.16);
+  transform: translateY(-2px);
 }
 
 .auth-preview-header {
@@ -271,6 +292,14 @@ select:focus {
   justify-content: space-between;
   min-height: 44px;
   padding: 0.65rem 0.75rem;
+  transition:
+    background-color 160ms ease,
+    transform 180ms ease;
+}
+
+.auth-preview-row:hover {
+  background: #f0fdf4;
+  transform: translateX(2px);
 }
 
 .auth-preview-row.strong {
@@ -303,6 +332,7 @@ select:focus {
 
 .auth-panel {
   align-self: center;
+  animation: fade-rise-in 560ms ease 90ms both;
   background: rgba(248, 255, 251, 0.96);
   border: 1px solid rgba(6, 78, 59, 0.2);
   border-radius: 8px;
@@ -427,6 +457,7 @@ select:focus {
 
 .topbar {
   align-items: center;
+  animation: fade-slide-in 480ms ease both;
   background: rgba(248, 255, 251, 0.86);
   border: 1px solid rgba(6, 78, 59, 0.14);
   border-radius: 8px;
@@ -497,10 +528,20 @@ select:focus {
   background: var(--primary);
   color: #fff;
   padding: 0.78rem 1rem;
+  transition:
+    background-color 160ms ease,
+    box-shadow 180ms ease,
+    transform 160ms ease;
 }
 
 .primary-button:hover {
   background: var(--primary-dark);
+  box-shadow: 0 14px 32px rgba(6, 78, 59, 0.2);
+  transform: translateY(-1px);
+}
+
+.primary-button:active {
+  transform: translateY(0) scale(0.99);
 }
 
 .auth-submit {
@@ -519,21 +560,39 @@ select:focus {
   transform: translateY(-1px);
 }
 
+.auth-submit:active {
+  transform: translateY(0) scale(0.99);
+}
+
 .ghost-button {
   background: var(--surface-strong);
   color: var(--text);
   padding: 0.55rem 0.75rem;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .icon-button {
   width: 42px;
   background: var(--surface-strong);
   color: var(--text);
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
 }
 
 .icon-button:hover,
 .ghost-button:hover {
   background: #e3eaf3;
+  transform: translateY(-1px);
+}
+
+.icon-button:active,
+.ghost-button:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .icon-button.danger {
@@ -570,6 +629,16 @@ select:focus {
   overflow: hidden;
   padding: 1rem;
   position: relative;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.metric-card:hover {
+  border-color: rgba(6, 78, 59, 0.26);
+  box-shadow: 0 22px 54px rgba(6, 78, 59, 0.12);
+  transform: translateY(-2px);
 }
 
 .metric-card::before {
@@ -590,7 +659,15 @@ select:focus {
   flex: 0 0 auto;
   height: 44px;
   justify-content: center;
+  transition:
+    background-color 180ms ease,
+    transform 180ms ease;
   width: 44px;
+}
+
+.metric-card:hover .metric-icon {
+  background: #d1fae5;
+  transform: scale(1.04);
 }
 
 .metric-card > div > span {
@@ -627,6 +704,7 @@ select:focus {
 
 .workspace {
   align-items: flex-start;
+  animation: fade-rise-in 560ms ease 120ms both;
   display: grid;
   gap: 1.2rem;
   grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
@@ -643,6 +721,16 @@ select:focus {
   box-shadow: 0 18px 48px rgba(6, 78, 59, 0.08);
   overflow: hidden;
   position: relative;
+  transition:
+    border-color 180ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
+}
+
+.task-form-panel:hover,
+.task-list-panel:hover {
+  border-color: rgba(6, 78, 59, 0.22);
+  box-shadow: 0 22px 54px rgba(6, 78, 59, 0.11);
 }
 
 .task-form-panel::before,
@@ -712,11 +800,20 @@ select:focus {
   gap: 0.45rem;
   min-height: 44px;
   padding: 0 0.75rem;
+  transition:
+    border-color 160ms ease,
+    box-shadow 160ms ease,
+    transform 160ms ease;
 }
 
 .filters label:focus-within {
   border-color: #064e3b;
   box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
+}
+
+.filters label:hover {
+  border-color: rgba(6, 78, 59, 0.28);
+  transform: translateY(-1px);
 }
 
 .filters label select,
@@ -731,6 +828,18 @@ select:focus {
 .filters > input {
   border-color: rgba(6, 78, 59, 0.14);
   min-height: 44px;
+}
+
+.filters label svg {
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+.filters label:focus-within svg,
+.filters label:hover svg {
+  color: #022c22;
+  transform: scale(1.06);
 }
 
 .search-field {
@@ -772,6 +881,10 @@ select:focus {
   grid-template-columns: minmax(220px, 1.5fr) 135px 115px 120px 142px;
   min-height: 74px;
   padding: 0.8rem;
+  transition:
+    background-color 160ms ease,
+    box-shadow 180ms ease,
+    transform 180ms ease;
 }
 
 .task-row:first-child {
@@ -785,6 +898,12 @@ select:focus {
   font-weight: 900;
   min-height: 44px;
   text-transform: uppercase;
+}
+
+.task-row:not(.task-row-head):hover {
+  background: #f8fffb;
+  box-shadow: inset 5px 0 0 #064e3b;
+  transform: translateX(2px);
 }
 
 .task-row strong {
@@ -807,6 +926,14 @@ select:focus {
   font-weight: 900;
   justify-content: center;
   padding: 0.38rem 0.62rem;
+  transition:
+    filter 160ms ease,
+    transform 160ms ease;
+}
+
+.pill:hover {
+  filter: saturate(1.08);
+  transform: translateY(-1px);
 }
 
 .status-pending,
@@ -843,6 +970,7 @@ select:focus {
   min-height: 180px;
   place-items: center;
   text-align: center;
+  animation: fade-rise-in 420ms ease both;
 }
 
 .modal-backdrop {
@@ -853,6 +981,7 @@ select:focus {
   padding: 1rem;
   position: fixed;
   z-index: 10;
+  animation: backdrop-in 160ms ease both;
 }
 
 .task-modal {
@@ -862,6 +991,7 @@ select:focus {
   overflow: auto;
   padding: 1.1rem;
   width: min(100%, 760px);
+  animation: modal-in 220ms ease both;
 }
 
 .detail-grid {
@@ -878,6 +1008,14 @@ select:focus {
   gap: 0.25rem;
   min-height: 78px;
   padding: 0.75rem;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.detail-item:hover {
+  background: #dcfce7;
+  transform: translateY(-1px);
 }
 
 .detail-item span {
@@ -913,6 +1051,16 @@ select:focus {
   display: flex;
   gap: 0.65rem;
   padding: 0.8rem;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.history-item:hover {
+  background: #f8fffb;
+  border-color: rgba(6, 78, 59, 0.22);
+  transform: translateX(2px);
 }
 
 .history-item svg {
@@ -931,6 +1079,63 @@ select:focus {
   display: block;
   font-size: 0.78rem;
   margin-top: 0.35rem;
+}
+
+@keyframes fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 1ms !important;
+  }
 }
 
 @media (max-width: 1050px) {
