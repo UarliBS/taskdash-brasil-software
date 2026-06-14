@@ -2,6 +2,8 @@
 
 import {
   CheckCircle2,
+  CircleDashed,
+  ClipboardList,
   Eye,
   Filter,
   LogOut,
@@ -9,10 +11,13 @@ import {
   Plus,
   Save,
   Search,
+  TimerReset,
   Trash2,
+  TrendingUp,
   X,
 } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
 type Priority = "LOW" | "MEDIUM" | "HIGH";
@@ -222,9 +227,12 @@ export function DashboardClient({ user }: DashboardClientProps) {
   return (
     <main className="app-shell">
       <header className="topbar">
-        <div>
-          <p className="eyebrow">TaskDash</p>
-          <h1>Gerenciamento de tarefas</h1>
+        <div className="topbar-title">
+          <span className="auth-brand-mark">TD</span>
+          <div>
+            <p className="eyebrow">TaskDash</p>
+            <h1>Gerenciamento de tarefas</h1>
+          </div>
         </div>
         <div className="user-area">
           <span>{user.name}</span>
@@ -235,10 +243,29 @@ export function DashboardClient({ user }: DashboardClientProps) {
       </header>
 
       <section className="metrics-grid" aria-label="Indicadores">
-        <Metric label="Total" value={dashboard.total} />
-        <Metric label="Pendentes" value={dashboard.PENDING} tone="warning" />
-        <Metric label="Em andamento" value={dashboard.IN_PROGRESS} tone="info" />
-        <Metric label="Concluidas" value={dashboard.DONE} tone="success" />
+        <Metric
+          icon={<ClipboardList size={20} />}
+          label="Total"
+          value={dashboard.total}
+        />
+        <Metric
+          icon={<CircleDashed size={20} />}
+          label="Pendentes"
+          value={dashboard.PENDING}
+          tone="warning"
+        />
+        <Metric
+          icon={<TimerReset size={20} />}
+          label="Em andamento"
+          value={dashboard.IN_PROGRESS}
+          tone="info"
+        />
+        <Metric
+          icon={<TrendingUp size={20} />}
+          label="Concluidas"
+          value={dashboard.DONE}
+          tone="success"
+        />
       </section>
 
       <section className="workspace">
@@ -500,18 +527,23 @@ export function DashboardClient({ user }: DashboardClientProps) {
 }
 
 function Metric({
+  icon,
   label,
   value,
   tone = "neutral",
 }: {
+  icon: ReactNode;
   label: string;
   value: number;
   tone?: "neutral" | "warning" | "info" | "success";
 }) {
   return (
     <article className={`metric-card metric-${tone}`}>
-      <span>{label}</span>
-      <strong>{value}</strong>
+      <span className="metric-icon">{icon}</span>
+      <div>
+        <span>{label}</span>
+        <strong>{value}</strong>
+      </div>
     </article>
   );
 }

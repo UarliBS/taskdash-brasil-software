@@ -5,8 +5,8 @@
   --text: #172033;
   --muted: #68758a;
   --line: #d9e1ec;
-  --primary: #0f766e;
-  --primary-dark: #115e59;
+  --primary: #064e3b;
+  --primary-dark: #022c22;
   --danger: #b42318;
   --warning: #9a6b06;
   --info: #2563eb;
@@ -419,16 +419,31 @@ select:focus {
 
 .app-shell {
   min-height: 100vh;
+  background:
+    linear-gradient(135deg, rgba(222, 247, 239, 0.92), rgba(248, 255, 251, 0.96) 42%, rgba(236, 253, 245, 0.9)),
+    #f7fbf9;
   padding: clamp(1rem, 3vw, 2rem);
 }
 
 .topbar {
   align-items: center;
+  background: rgba(248, 255, 251, 0.86);
+  border: 1px solid rgba(6, 78, 59, 0.14);
+  border-radius: 8px;
+  box-shadow: 0 18px 48px rgba(6, 78, 59, 0.08);
   display: flex;
   gap: 1rem;
   justify-content: space-between;
   margin: 0 auto 1.2rem;
   max-width: 1420px;
+  padding: 1rem;
+}
+
+.topbar-title {
+  align-items: center;
+  display: flex;
+  gap: 0.9rem;
+  min-width: 0;
 }
 
 .user-area {
@@ -439,7 +454,7 @@ select:focus {
 }
 
 .user-area span {
-  color: var(--muted);
+  color: #315f51;
   font-weight: 700;
   max-width: 28vw;
   overflow: hidden;
@@ -544,37 +559,70 @@ select:focus {
 }
 
 .metric-card {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-left: 5px solid var(--primary);
+  align-items: center;
+  background: rgba(248, 255, 251, 0.96);
+  border: 1px solid rgba(6, 78, 59, 0.14);
   border-radius: 8px;
-  display: grid;
-  gap: 0.35rem;
+  box-shadow: 0 16px 40px rgba(6, 78, 59, 0.08);
+  display: flex;
+  gap: 0.85rem;
   min-height: 108px;
+  overflow: hidden;
   padding: 1rem;
+  position: relative;
 }
 
-.metric-card span {
-  color: var(--muted);
+.metric-card::before {
+  background: linear-gradient(180deg, #064e3b, #0f766e);
+  content: "";
+  inset: 0 auto 0 0;
+  position: absolute;
+  width: 5px;
+}
+
+.metric-icon {
+  align-items: center;
+  background: #ecfdf3;
+  border: 1px solid rgba(6, 78, 59, 0.14);
+  border-radius: 8px;
+  color: #064e3b;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 44px;
+  justify-content: center;
+  width: 44px;
+}
+
+.metric-card > div > span {
+  color: #315f51;
   font-size: 0.88rem;
   font-weight: 800;
 }
 
 .metric-card strong {
+  color: #092f25;
+  display: block;
   font-size: 2rem;
   line-height: 1;
+  margin-top: 0.25rem;
 }
 
 .metric-warning {
-  border-left-color: var(--warning);
+  --metric-accent: #8a5a00;
 }
 
 .metric-info {
-  border-left-color: var(--info);
+  --metric-accent: #0f766e;
 }
 
 .metric-success {
-  border-left-color: var(--success);
+  --metric-accent: #064e3b;
+}
+
+.metric-warning::before,
+.metric-info::before,
+.metric-success::before {
+  background: linear-gradient(180deg, var(--metric-accent), #0f766e);
 }
 
 .workspace {
@@ -589,15 +637,45 @@ select:focus {
 .task-form-panel,
 .task-list-panel,
 .task-modal {
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: rgba(248, 255, 251, 0.96);
+  border: 1px solid rgba(6, 78, 59, 0.14);
   border-radius: 8px;
-  box-shadow: 0 12px 30px rgba(23, 32, 51, 0.05);
+  box-shadow: 0 18px 48px rgba(6, 78, 59, 0.08);
+  overflow: hidden;
+  position: relative;
+}
+
+.task-form-panel::before,
+.task-list-panel::before,
+.task-modal::before {
+  background: linear-gradient(90deg, #064e3b, #0f766e);
+  content: "";
+  height: 4px;
+  inset: 0 0 auto;
+  position: absolute;
 }
 
 .task-form-panel,
 .task-list-panel {
-  padding: 1rem;
+  padding: 1.15rem;
+}
+
+.task-form-panel input,
+.task-form-panel textarea,
+.task-form-panel select,
+.task-list-panel input,
+.task-list-panel select {
+  background: #fbfffd;
+  border-color: rgba(6, 78, 59, 0.16);
+}
+
+.task-form-panel input:focus,
+.task-form-panel textarea:focus,
+.task-form-panel select:focus,
+.task-list-panel input:focus,
+.task-list-panel select:focus {
+  border-color: #064e3b;
+  box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
 }
 
 .section-heading {
@@ -606,6 +684,10 @@ select:focus {
   gap: 0.8rem;
   justify-content: space-between;
   margin-bottom: 1rem;
+}
+
+.section-heading h2 {
+  color: #092f25;
 }
 
 .field-grid {
@@ -623,8 +705,32 @@ select:focus {
 
 .filters label {
   align-items: center;
+  background: #fbfffd;
+  border: 1px solid rgba(6, 78, 59, 0.14);
+  border-radius: 8px;
   display: flex;
   gap: 0.45rem;
+  min-height: 44px;
+  padding: 0 0.75rem;
+}
+
+.filters label:focus-within {
+  border-color: #064e3b;
+  box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
+}
+
+.filters label select,
+.filters label input {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  min-height: auto;
+  padding: 0;
+}
+
+.filters > input {
+  border-color: rgba(6, 78, 59, 0.14);
+  min-height: 44px;
 }
 
 .search-field {
@@ -632,30 +738,35 @@ select:focus {
 }
 
 .search-field svg {
-  color: var(--muted);
-  left: 0.75rem;
-  position: absolute;
+  color: #064e3b;
+  flex: 0 0 auto;
+  left: auto;
+  position: static;
 }
 
 .search-field input {
-  padding-left: 2.25rem;
+  padding-left: 0;
 }
 
 .result-count {
-  color: var(--muted);
+  background: #ecfdf3;
+  border-radius: 999px;
+  color: #064e3b;
   font-size: 0.86rem;
   font-weight: 800;
+  padding: 0.35rem 0.7rem;
 }
 
 .task-table {
-  border: 1px solid var(--line);
+  border: 1px solid rgba(6, 78, 59, 0.12);
   border-radius: 8px;
   overflow: hidden;
 }
 
 .task-row {
   align-items: center;
-  border-top: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.58);
+  border-top: 1px solid rgba(6, 78, 59, 0.1);
   display: grid;
   gap: 0.8rem;
   grid-template-columns: minmax(220px, 1.5fr) 135px 115px 120px 142px;
@@ -668,8 +779,8 @@ select:focus {
 }
 
 .task-row-head {
-  background: var(--surface-strong);
-  color: var(--muted);
+  background: #064e3b;
+  color: #ecfdf3;
   font-size: 0.78rem;
   font-weight: 900;
   min-height: 44px;
@@ -677,6 +788,7 @@ select:focus {
 }
 
 .task-row strong {
+  color: #092f25;
   display: block;
   overflow-wrap: anywhere;
 }
@@ -699,20 +811,20 @@ select:focus {
 
 .status-pending,
 .priority-medium {
-  background: #fff7e6;
-  color: var(--warning);
+  background: #fef3c7;
+  color: #854d0e;
 }
 
 .status-in_progress,
 .priority-high {
-  background: #eaf1ff;
-  color: var(--info);
+  background: #ccfbf1;
+  color: #0f766e;
 }
 
 .status-done,
 .priority-low {
   background: #ecfdf3;
-  color: var(--success);
+  color: #064e3b;
 }
 
 .row-actions {
@@ -722,8 +834,8 @@ select:focus {
 
 .empty-state {
   align-items: center;
-  background: var(--surface-strong);
-  border: 1px dashed #c7d2e2;
+  background: #f0fdf4;
+  border: 1px dashed rgba(6, 78, 59, 0.28);
   border-radius: 8px;
   color: var(--muted);
   display: grid;
@@ -735,7 +847,7 @@ select:focus {
 
 .modal-backdrop {
   align-items: center;
-  background: rgba(11, 18, 32, 0.42);
+  background: rgba(9, 47, 37, 0.48);
   display: grid;
   inset: 0;
   padding: 1rem;
@@ -759,7 +871,8 @@ select:focus {
 }
 
 .detail-item {
-  background: var(--surface-strong);
+  background: #f0fdf4;
+  border: 1px solid rgba(6, 78, 59, 0.1);
   border-radius: 8px;
   display: grid;
   gap: 0.25rem;
@@ -778,7 +891,7 @@ select:focus {
 }
 
 .description-block {
-  border: 1px solid var(--line);
+  border: 1px solid rgba(6, 78, 59, 0.14);
   border-radius: 8px;
   line-height: 1.55;
   margin-top: 1rem;
@@ -794,7 +907,8 @@ select:focus {
 
 .history-item {
   align-items: flex-start;
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid rgba(6, 78, 59, 0.12);
   border-radius: 8px;
   display: flex;
   gap: 0.65rem;
@@ -802,7 +916,7 @@ select:focus {
 }
 
 .history-item svg {
-  color: var(--primary);
+  color: #064e3b;
   flex: 0 0 auto;
   margin-top: 0.15rem;
 }
