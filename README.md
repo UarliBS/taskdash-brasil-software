@@ -1,10 +1,10 @@
 # TaskDash - Brasil Software
 
-Sistema web de gerenciamento de tarefas desenvolvido para o desafio tecnico do Programa de Trainee Brasil Software.
+Sistema web de gerenciamento de tarefas desenvolvido para o desafio técnico do Programa de Trainee Brasil Software.
 
 ## Stack
 
-- Next.js 14
+- Next.js 16
 - TypeScript
 - PostgreSQL
 - Prisma
@@ -15,22 +15,23 @@ Sistema web de gerenciamento de tarefas desenvolvido para o desafio tecnico do P
 
 - Cadastro de usuário com nome, e-mail único e senha mínima de 8 caracteres.
 - Login e logout.
+- Recuperação de senha por e-mail com Resend.
 - Senhas armazenadas com hash bcrypt.
 - Rotas internas protegidas por autenticação.
 - CRUD de tarefas por usuário autenticado.
 - Prioridades: Baixa, Média e Alta.
 - Status: Pendente, Em andamento e Concluída.
-- Transicoes de status validadas no backend.
+- Transições de status validadas no backend.
 - Pesquisa por título e descrição.
 - Filtros por status, prioridade e data de vencimento.
 - Dashboard com total geral e totais por status.
 - Histórico de alterações por tarefa.
-- Exclusao com confirmacao na interface e remocao logica das consultas.
+- Exclusão com confirmação na interface e remoção lógica das consultas.
 - Interface responsiva.
 
 ## Como Rodar
 
-1. Instale as dependencias:
+1. Instale as dependências:
 
 ```bash
 npm install
@@ -68,23 +69,28 @@ npm run dev
 
 Acesse `http://localhost:3000`.
 
-Para validar a versao de producao local:
+Para validar a versão de produção local:
 
 ```bash
 npm run build
 npm run start
 ```
 
-## Variaveis de Ambiente
+## Variáveis de Ambiente
 
 ```env
 DATABASE_URL="postgresql://taskdash:taskdash@localhost:5432/taskdash?schema=public"
 AUTH_SECRET="change-this-secret-before-production"
 AUTH_COOKIE_SECURE="false"
+APP_URL="http://localhost:3000"
+RESEND_API_KEY=""
+RESEND_FROM_EMAIL="TaskDash <onboarding@resend.dev>"
 ```
 
 Use `AUTH_COOKIE_SECURE="true"` apenas em ambientes HTTPS.
 
+Para envio real de recuperação de senha, configure `RESEND_API_KEY` e um remetente verificado em `RESEND_FROM_EMAIL`. Em ambiente local com `APP_URL` apontando para `localhost`, a API retorna um link de preview para facilitar testes sem disparar e-mail real.
+
 ## Observações de Escopo
 
-A recuperação de senha por e-mail foi tratada como opcional, pois o documento usa "poderá disponibilizar". O MVP prioriza autenticação, regras de tarefa, dashboard, filtros e histórico.
+A recuperação de senha por e-mail foi implementada com token temporário e envio via Resend. O MVP prioriza autenticação, regras de tarefa, dashboard, filtros e histórico.

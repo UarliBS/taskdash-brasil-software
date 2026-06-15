@@ -12,6 +12,15 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Informe a senha."),
 });
 
+export const passwordResetRequestSchema = z.object({
+  email: z.string().trim().email("Informe um e-mail válido.").toLowerCase(),
+});
+
+export const passwordResetConfirmSchema = z.object({
+  token: z.string().trim().min(1, "Token inválido."),
+  password: z.string().trim().min(8, "A senha deve ter no mínimo 8 caracteres."),
+});
+
 export const taskSchema = z.object({
   title: z.string().trim().min(1, "Informe o título da tarefa."),
   description: z.string().trim().optional().nullable(),

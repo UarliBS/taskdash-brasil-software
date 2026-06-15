@@ -683,6 +683,39 @@ select:focus {
   padding: 0.72rem;
 }
 
+.form-success {
+  background: #ecfdf3;
+  border: 1px solid rgba(6, 78, 59, 0.18);
+  border-radius: 8px;
+  color: #064e3b;
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 0.72rem;
+}
+
+.forgot-password-link {
+  color: #064e3b;
+  font-size: 0.82rem;
+  font-weight: 900;
+  justify-self: end;
+}
+
+.forgot-password-link:hover {
+  color: #022c22;
+  transform: translateY(-1px);
+}
+
+.dev-preview-link {
+  background: #f0fdf4;
+  border: 1px dashed rgba(6, 78, 59, 0.28);
+  border-radius: 8px;
+  color: #315f51;
+  font-size: 0.82rem;
+  font-weight: 800;
+  line-height: 1.45;
+  padding: 0.72rem;
+}
+
 .metrics-grid {
   display: grid;
   gap: 0.9rem;

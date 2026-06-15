@@ -35,6 +35,7 @@ model User {
   updatedAt    DateTime      @updatedAt
   tasks        Task[]
   histories    TaskHistory[]
+  passwordResetTokens PasswordResetToken[]
 }
 
 model Task {
@@ -67,4 +68,17 @@ model TaskHistory {
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([taskId, createdAt])
+}
+
+model PasswordResetToken {
+  id        String    @id @default(cuid())
+  tokenHash String    @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime  @default(now())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
 }

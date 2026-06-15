@@ -217,6 +217,12 @@ export function AuthPanel({ mode }: AuthPanelProps) {
 
             {error ? <p className="form-error">{error}</p> : null}
 
+            {!isRegister ? (
+              <Link className="forgot-password-link" href="/forgot-password">
+                Esqueci minha senha
+              </Link>
+            ) : null}
+
             <button
               className="primary-button auth-submit"
               type="submit"
