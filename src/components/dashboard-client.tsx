@@ -100,6 +100,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [dashboard, setDashboard] = useState<DashboardCounts>(emptyCounts);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [form, setForm] = useState(initialForm);
   const [filters, setFilters] = useState({
@@ -110,6 +111,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
   });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
 
   const query = useMemo(() => {
@@ -197,25 +199,25 @@ export function DashboardClient({ user }: DashboardClientProps) {
   }
 
   async function removeTask(task: Task) {
-    const confirmed = window.confirm(`Excluir a tarefa "${task.title}"?`);
+    setDeleting(true);
+    try {
+      const response = await fetch(`/api/tasks/${task.id}`, { method: "DELETE" });
 
-    if (!confirmed) {
-      return;
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        setError(data.message ?? "Não foi possível excluir a tarefa.");
+        return;
+      }
+
+      if (selectedTask?.id === task.id) {
+        setSelectedTask(null);
+      }
+
+      setTaskToDelete(null);
+      await loadTasks();
+    } finally {
+      setDeleting(false);
     }
-
-    const response = await fetch(`/api/tasks/${task.id}`, { method: "DELETE" });
-
-    if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
-      setError(data.message ?? "Não foi possível excluir a tarefa.");
-      return;
-    }
-
-    if (selectedTask?.id === task.id) {
-      setSelectedTask(null);
-    }
-
-    await loadTasks();
   }
 
   async function logout() {
@@ -282,7 +284,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
 
           <form className="stack" onSubmit={handleSubmit}>
             <label>
-              Titulo
+              Título
               <input
                 value={form.title}
                 onChange={(event) => setForm({ ...form, title: event.target.value })}
@@ -420,7 +422,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
           ) : (
             <div className="task-table">
               <div className="task-row task-row-head">
-                <span>Titulo</span>
+                <span>Título</span>
                 <span>Status</span>
                 <span>Prioridade</span>
                 <span>Vencimento</span>
@@ -459,7 +461,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                     <button
                       className="icon-button danger"
                       type="button"
-                      onClick={() => void removeTask(task)}
+                      onClick={() => setTaskToDelete(task)}
                       title="Excluir"
                     >
                       <Trash2 size={17} />
@@ -518,6 +520,47 @@ export function DashboardClient({ user }: DashboardClientProps) {
                   </div>
                 </div>
               ))}
+            </div>
+          </section>
+        </div>
+      ) : null}
+
+      {taskToDelete ? (
+        <div className="modal-backdrop" role="presentation">
+          <section
+            className="confirm-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="delete-task-title"
+          >
+            <div className="confirm-icon">
+              <Trash2 size={22} />
+            </div>
+            <div>
+              <p className="eyebrow">Confirmar exclusão</p>
+              <h2 id="delete-task-title">Excluir esta tarefa?</h2>
+              <p className="confirm-text">
+                A tarefa <strong>{taskToDelete.title}</strong> será removida das
+                consultas e do dashboard.
+              </p>
+            </div>
+            <div className="confirm-actions">
+              <button
+                className="ghost-button"
+                type="button"
+                onClick={() => setTaskToDelete(null)}
+              >
+                Cancelar
+              </button>
+              <button
+                className="danger-button"
+                type="button"
+                disabled={deleting}
+                onClick={() => void removeTask(taskToDelete)}
+              >
+                <Trash2 size={17} />
+                {deleting ? "Excluindo..." : "Excluir tarefa"}
+              </button>
             </div>
           </section>
         </div>

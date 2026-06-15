@@ -599,6 +599,35 @@ select:focus {
   color: var(--danger);
 }
 
+.danger-button {
+  align-items: center;
+  background: #b42318;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  display: inline-flex;
+  font-weight: 900;
+  gap: 0.5rem;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0.72rem 0.95rem;
+  transition:
+    background-color 160ms ease,
+    box-shadow 180ms ease,
+    transform 160ms ease;
+}
+
+.danger-button:hover,
+.danger-button:focus-visible {
+  background: #912018;
+  box-shadow: 0 14px 32px rgba(180, 35, 24, 0.22);
+  transform: translateY(-1px);
+}
+
+.danger-button:active {
+  transform: translateY(0) scale(0.99);
+}
+
 .form-error {
   background: #fef3f2;
   border: 1px solid #fecdca;
@@ -1006,6 +1035,58 @@ select:focus {
   animation: modal-in 220ms ease both;
 }
 
+.confirm-modal {
+  background: rgba(248, 255, 251, 0.98);
+  border: 1px solid rgba(180, 35, 24, 0.18);
+  border-radius: 8px;
+  box-shadow: 0 30px 85px rgba(9, 47, 37, 0.22);
+  display: grid;
+  gap: 1rem;
+  margin: 0 auto;
+  max-width: 430px;
+  overflow: hidden;
+  padding: 1.25rem;
+  position: relative;
+  width: min(100%, 430px);
+  animation: modal-in 220ms ease both;
+}
+
+.confirm-modal::before {
+  background: linear-gradient(90deg, #b42318, #064e3b);
+  content: "";
+  height: 4px;
+  inset: 0 0 auto;
+  position: absolute;
+}
+
+.confirm-icon {
+  align-items: center;
+  background: #fee2e2;
+  border: 1px solid rgba(180, 35, 24, 0.16);
+  border-radius: 8px;
+  color: #991b1b;
+  display: inline-flex;
+  height: 48px;
+  justify-content: center;
+  width: 48px;
+}
+
+.confirm-text {
+  color: #315f51;
+  line-height: 1.55;
+  margin-top: 0.7rem;
+}
+
+.confirm-text strong {
+  color: #092f25;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
 .detail-grid {
   display: grid;
   gap: 0.8rem;
@@ -1216,5 +1297,13 @@ select:focus {
 
   .row-actions {
     justify-content: flex-start;
+  }
+
+  .confirm-actions {
+    flex-direction: column-reverse;
+  }
+
+  .confirm-actions button {
+    width: 100%;
   }
 }
