@@ -65,6 +65,7 @@ Usuários autenticados poderão criar tarefas.
 * Título
 * Descrição
 * Data de vencimento
+* Responsável
 * Prioridade
 * Status
 
@@ -148,6 +149,7 @@ O sistema deverá permitir filtrar tarefas por:
 
 * Status
 * Prioridade
+* Responsável
 * Data de vencimento
 
 ---
@@ -162,6 +164,7 @@ O sistema deverá exibir indicadores resumidos.
 * Total de tarefas pendentes
 * Total de tarefas em andamento
 * Total de tarefas concluídas
+* Total de tarefas atrasadas
 
 ---
 
@@ -172,6 +175,8 @@ Não será permitido:
 * Criar tarefas sem título.
 * Criar tarefas sem status.
 * Criar tarefas sem prioridade.
+* Criar tarefas sem responsável.
+* Criar tarefas sem data de vencimento.
 
 ---
 
@@ -217,6 +222,7 @@ Não será permitido:
 
 * Título
 * Descrição
+* Responsável
 * Prioridade
 * Status
 * Data de vencimento
@@ -232,6 +238,7 @@ Não será permitido:
 * Título
 * Status
 * Prioridade
+* Responsável
 * Data de vencimento
 
 ---
@@ -299,6 +306,7 @@ Não será permitido:
 * Quantidade de tarefas pendentes
 * Quantidade de tarefas em andamento
 * Quantidade de tarefas concluídas
+* Quantidade de tarefas atrasadas
 * Total geral de tarefas
 
 ---
