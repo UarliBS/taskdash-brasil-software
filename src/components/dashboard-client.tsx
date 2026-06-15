@@ -2,6 +2,8 @@
 
 import {
   CheckCircle2,
+  ChevronLeft,
+  ChevronRight,
   CircleDashed,
   ClipboardList,
   Eye,
@@ -91,6 +93,8 @@ const initialForm = {
   status: "PENDING" as TaskStatus,
 };
 
+const TASKS_PER_PAGE = 4;
+
 type DashboardClientProps = {
   user: User;
 };
@@ -112,6 +116,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
   const [error, setError] = useState("");
 
   const query = useMemo(() => {
@@ -130,6 +135,17 @@ export function DashboardClient({ user }: DashboardClientProps) {
     void loadTasks();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [query]);
+
+  const totalPages = Math.max(1, Math.ceil(tasks.length / TASKS_PER_PAGE));
+  const safeCurrentPage = Math.min(currentPage, totalPages);
+  const pageStart = (safeCurrentPage - 1) * TASKS_PER_PAGE;
+  const pageEnd = Math.min(pageStart + TASKS_PER_PAGE, tasks.length);
+  const paginatedTasks = tasks.slice(pageStart, pageEnd);
+
+  function updateFilters(nextFilters: typeof filters) {
+    setCurrentPage(1);
+    setFilters(nextFilters);
+  }
 
   async function loadTasks() {
     setLoading(true);
@@ -367,7 +383,9 @@ export function DashboardClient({ user }: DashboardClientProps) {
               <input
                 value={filters.q}
                 placeholder="Pesquisar por título ou descrição"
-                onChange={(event) => setFilters({ ...filters, q: event.target.value })}
+                onChange={(event) =>
+                  updateFilters({ ...filters, q: event.target.value })
+                }
               />
             </label>
 
@@ -376,7 +394,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
               <select
                 value={filters.status}
                 onChange={(event) =>
-                  setFilters({ ...filters, status: event.target.value })
+                  updateFilters({ ...filters, status: event.target.value })
                 }
               >
                 <option value="">Status</option>
@@ -393,7 +411,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
               <select
                 value={filters.priority}
                 onChange={(event) =>
-                  setFilters({ ...filters, priority: event.target.value })
+                  updateFilters({ ...filters, priority: event.target.value })
                 }
               >
                 <option value="">Prioridade</option>
@@ -410,7 +428,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
               type="date"
               value={filters.dueDate}
               onChange={(event) =>
-                setFilters({ ...filters, dueDate: event.target.value })
+                updateFilters({ ...filters, dueDate: event.target.value })
               }
             />
           </div>
@@ -428,7 +446,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                 <span>Vencimento</span>
                 <span>Ações</span>
               </div>
-              {tasks.map((task) => (
+              {paginatedTasks.map((task) => (
                 <article className="task-row" key={task.id}>
                   <div>
                     <strong>{task.title}</strong>
@@ -471,6 +489,39 @@ export function DashboardClient({ user }: DashboardClientProps) {
               ))}
             </div>
           )}
+
+          {tasks.length > TASKS_PER_PAGE ? (
+            <nav className="pagination" aria-label="Paginação de tarefas">
+              <span>
+                Exibindo {pageStart + 1}-{pageEnd} de {tasks.length}
+              </span>
+              <div className="pagination-actions">
+                <button
+                  className="ghost-button"
+                  type="button"
+                  onClick={() => setCurrentPage((page) => Math.max(1, page - 1))}
+                  disabled={safeCurrentPage === 1}
+                >
+                  <ChevronLeft size={16} />
+                  Anterior
+                </button>
+                <strong>
+                  {safeCurrentPage} / {totalPages}
+                </strong>
+                <button
+                  className="ghost-button"
+                  type="button"
+                  onClick={() =>
+                    setCurrentPage((page) => Math.min(totalPages, page + 1))
+                  }
+                  disabled={safeCurrentPage === totalPages}
+                >
+                  Próxima
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            </nav>
+          ) : null}
         </section>
       </section>
 

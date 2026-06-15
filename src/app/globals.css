@@ -112,7 +112,10 @@ select {
 }
 
 textarea {
+  max-width: 100%;
+  overflow-wrap: anywhere;
   resize: vertical;
+  word-break: break-word;
 }
 
 input:focus,
@@ -431,6 +434,35 @@ select:focus {
 
 .auth-input-wrap input:focus {
   box-shadow: none;
+}
+
+.password-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: #315f51;
+  display: inline-flex;
+  flex: 0 0 auto;
+  height: 36px;
+  justify-content: center;
+  padding: 0;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+  width: 36px;
+}
+
+.password-toggle:hover,
+.password-toggle:focus-visible {
+  background: #ecfdf3;
+  color: #064e3b;
+  transform: translateY(-1px);
+}
+
+.password-toggle:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .auth-switch {
@@ -795,6 +827,15 @@ select:focus {
   box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
 }
 
+.task-form-panel textarea {
+  line-height: 1.5;
+  max-height: 180px;
+  min-height: 112px;
+  overflow: auto;
+  resize: vertical;
+  white-space: pre-wrap;
+}
+
 .section-heading {
   align-items: center;
   display: flex;
@@ -901,6 +942,39 @@ select:focus {
   overflow: hidden;
 }
 
+.pagination {
+  align-items: center;
+  display: flex;
+  gap: 0.9rem;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.pagination > span {
+  color: #315f51;
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.pagination-actions {
+  align-items: center;
+  display: flex;
+  gap: 0.65rem;
+}
+
+.pagination-actions strong {
+  background: #ecfdf3;
+  border: 1px solid rgba(6, 78, 59, 0.12);
+  border-radius: 8px;
+  color: #064e3b;
+  display: inline-flex;
+  font-size: 0.86rem;
+  font-weight: 900;
+  justify-content: center;
+  min-width: 58px;
+  padding: 0.55rem 0.7rem;
+}
+
 .task-row {
   align-items: center;
   background: rgba(255, 255, 255, 0.58);
@@ -943,8 +1017,12 @@ select:focus {
 
 .task-row p {
   color: var(--muted);
+  display: -webkit-box;
   font-size: 0.86rem;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
   margin-top: 0.25rem;
+  overflow: hidden;
   overflow-wrap: anywhere;
 }
 
@@ -1126,8 +1204,12 @@ select:focus {
   border-radius: 8px;
   line-height: 1.55;
   margin-top: 1rem;
+  max-height: 220px;
+  overflow: auto;
+  overflow-wrap: anywhere;
   padding: 0.9rem;
   white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .history-list {
@@ -1297,6 +1379,19 @@ select:focus {
 
   .row-actions {
     justify-content: flex-start;
+  }
+
+  .pagination {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .pagination-actions {
+    justify-content: space-between;
+  }
+
+  .pagination-actions .ghost-button {
+    flex: 1;
   }
 
   .confirm-actions {
