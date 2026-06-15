@@ -23,9 +23,15 @@ export const passwordResetConfirmSchema = z.object({
 
 export const taskSchema = z.object({
   title: z.string().trim().min(1, "Informe o título da tarefa."),
-  responsible: z.string().trim().min(1, "Informe o responsável pela tarefa."),
+  responsible: z
+    .string({ required_error: "Informe o responsável pela tarefa." })
+    .trim()
+    .min(1, "Informe o responsável pela tarefa."),
   description: z.string().trim().optional().nullable(),
-  dueDate: z.string().trim().min(1, "Informe a data de vencimento."),
+  dueDate: z
+    .string({ required_error: "Informe a data de vencimento." })
+    .trim()
+    .min(1, "Informe a data de vencimento."),
   priority: z.nativeEnum(Priority, {
     errorMap: () => ({ message: "Prioridade inválida." }),
   }),

@@ -77,6 +77,14 @@ npm run build
 npm run start
 ```
 
+Para executar a suíte de testes automatizados:
+
+```bash
+npm test
+```
+
+Os testes sobem a aplicação em `http://localhost:3100`, exercitam as rotas reais e validam autenticação, tarefas, filtros, dashboard, histórico, isolamento por usuário e recuperação de senha.
+
 ## Variáveis de Ambiente
 
 ```env
