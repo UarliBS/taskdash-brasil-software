@@ -18,9 +18,16 @@ type AuthPanelProps = {
   mode: "login" | "register";
 };
 
+type FieldErrors = {
+  name?: string;
+  email?: string;
+  password?: string;
+};
+
 export function AuthPanel({ mode }: AuthPanelProps) {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const isRegister = mode === "register";
@@ -28,10 +35,18 @@ export function AuthPanel({ mode }: AuthPanelProps) {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
-    setLoading(true);
+    setFieldErrors({});
 
     const formData = new FormData(event.currentTarget);
     const payload = Object.fromEntries(formData.entries());
+    const validationErrors = validateAuthPayload(payload, isRegister);
+
+    if (Object.keys(validationErrors).length > 0) {
+      setFieldErrors(validationErrors);
+      return;
+    }
+
+    setLoading(true);
 
     const response = await fetch(`/api/auth/${isRegister ? "register" : "login"}`, {
       method: "POST",
@@ -119,14 +134,25 @@ export function AuthPanel({ mode }: AuthPanelProps) {
             </p>
           </div>
 
-          <form className="auth-form" onSubmit={handleSubmit}>
+          <form className="auth-form" onSubmit={handleSubmit} noValidate>
             {isRegister ? (
               <label className="auth-field">
                 Nome completo
                 <span className="auth-input-wrap">
                   <UserRound size={18} />
-                  <input name="name" type="text" autoComplete="name" required />
+                  <input
+                    name="name"
+                    type="text"
+                    autoComplete="name"
+                    aria-invalid={Boolean(fieldErrors.name)}
+                    aria-describedby={fieldErrors.name ? "name-error" : undefined}
+                  />
                 </span>
+                {fieldErrors.name ? (
+                  <span className="field-error" id="name-error">
+                    {fieldErrors.name}
+                  </span>
+                ) : null}
               </label>
             ) : null}
 
@@ -134,9 +160,25 @@ export function AuthPanel({ mode }: AuthPanelProps) {
               E-mail
               <span className="auth-input-wrap">
                 <Mail size={18} />
-                <input name="email" type="email" autoComplete="email" required />
+                <input
+                  name="email"
+                  type="email"
+                  autoComplete="email"
+                  aria-invalid={Boolean(fieldErrors.email)}
+                  aria-describedby={
+                    fieldErrors.email ? "email-error" : "email-hint"
+                  }
+                />
               </span>
-              <span className="field-hint">Informe um e-mail válido.</span>
+              {fieldErrors.email ? (
+                <span className="field-error" id="email-error">
+                  {fieldErrors.email}
+                </span>
+              ) : (
+                <span className="field-hint" id="email-hint">
+                  Informe um e-mail válido.
+                </span>
+              )}
             </label>
 
             <label className="auth-field">
@@ -147,8 +189,10 @@ export function AuthPanel({ mode }: AuthPanelProps) {
                   name="password"
                   type={showPassword ? "text" : "password"}
                   autoComplete={isRegister ? "new-password" : "current-password"}
-                  minLength={8}
-                  required
+                  aria-invalid={Boolean(fieldErrors.password)}
+                  aria-describedby={
+                    fieldErrors.password ? "password-error" : "password-hint"
+                  }
                 />
                 <button
                   className="password-toggle"
@@ -160,9 +204,15 @@ export function AuthPanel({ mode }: AuthPanelProps) {
                   {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
                 </button>
               </span>
-              <span className="field-hint">
-                A senha deve ter no mínimo 8 caracteres.
-              </span>
+              {fieldErrors.password ? (
+                <span className="field-error" id="password-error">
+                  {fieldErrors.password}
+                </span>
+              ) : (
+                <span className="field-hint" id="password-hint">
+                  A senha deve ter no mínimo 8 caracteres.
+                </span>
+              )}
             </label>
 
             {error ? <p className="form-error">{error}</p> : null}
@@ -187,4 +237,33 @@ export function AuthPanel({ mode }: AuthPanelProps) {
       </section>
     </main>
   );
+}
+
+function validateAuthPayload(payload: Record<string, FormDataEntryValue>, isRegister: boolean) {
+  const errors: FieldErrors = {};
+  const name = String(payload.name ?? "").trim();
+  const email = String(payload.email ?? "").trim();
+  const password = String(payload.password ?? "").trim();
+
+  if (isRegister && !name) {
+    errors.name = "Informe o nome completo.";
+  }
+
+  if (!email) {
+    errors.email = "Informe o e-mail.";
+  } else if (!isValidEmail(email)) {
+    errors.email = "Informe um e-mail em formato válido, como nome@dominio.com.";
+  }
+
+  if (!password) {
+    errors.password = "Informe a senha.";
+  } else if (password.length < 8) {
+    errors.password = "A senha deve ter no mínimo 8 caracteres.";
+  }
+
+  return errors;
+}
+
+function isValidEmail(value: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 }

@@ -95,6 +95,14 @@ label {
   text-transform: none;
 }
 
+.field-error {
+  color: #b42318;
+  font-size: 0.78rem;
+  font-weight: 800;
+  line-height: 1.35;
+  text-transform: none;
+}
+
 input,
 textarea,
 select {
@@ -416,6 +424,11 @@ select:focus {
   background: #fff;
   border-color: #064e3b;
   box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.14);
+}
+
+.auth-input-wrap:has(input[aria-invalid="true"]) {
+  border-color: rgba(180, 35, 24, 0.55);
+  box-shadow: 0 0 0 3px rgba(180, 35, 24, 0.1);
 }
 
 .auth-input-wrap svg {
