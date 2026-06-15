@@ -2,6 +2,8 @@
 
 Sistema web de gerenciamento de tarefas desenvolvido para o desafio técnico do Programa de Trainee Brasil Software.
 
+Aplicação publicada: https://taskdash-brasil-software.vercel.app
+
 ## Stack
 
 - Next.js 16
@@ -29,6 +31,32 @@ Sistema web de gerenciamento de tarefas desenvolvido para o desafio técnico do 
 - Histórico de alterações por tarefa.
 - Exclusão com confirmação na interface e remoção lógica das consultas.
 - Interface responsiva.
+
+## Capturas da Aplicação
+
+### Autenticação
+
+| Login | Cadastro |
+| --- | --- |
+| ![Tela de login](docs/screenshots/login.png) | ![Tela de cadastro](docs/screenshots/cadastro.png) |
+
+### Dashboard e Tarefas
+
+| Dashboard vazio | Dashboard com tarefas |
+| --- | --- |
+| ![Dashboard sem tarefas](docs/screenshots/dashboard-vazio.png) | ![Dashboard com tarefa cadastrada](docs/screenshots/dashboard-tarefas.png) |
+
+| Detalhes da tarefa | Editar tarefa |
+| --- | --- |
+| ![Modal de detalhes da tarefa](docs/screenshots/detalhes-tarefa.png) | ![Modal de edição da tarefa](docs/screenshots/editar-tarefa.png) |
+
+| Confirmação de exclusão | Recuperação de senha |
+| --- | --- |
+| ![Modal de confirmação de exclusão](docs/screenshots/confirmacao-exclusao.png) | ![Tela de recuperação de senha](docs/screenshots/recuperar-senha.png) |
+
+### E-mail de Redefinição
+
+![E-mail de redefinição de senha](docs/screenshots/email-redefinicao-senha.png)
 
 ## Como Rodar
 
