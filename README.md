@@ -19,12 +19,13 @@ Sistema web de gerenciamento de tarefas desenvolvido para o desafio técnico do 
 - Senhas armazenadas com hash bcrypt.
 - Rotas internas protegidas por autenticação.
 - CRUD de tarefas por usuário autenticado.
+- Tarefas com responsável e data de vencimento obrigatórios.
 - Prioridades: Baixa, Média e Alta.
 - Status: Pendente, Em andamento e Concluída.
 - Transições de status validadas no backend.
 - Pesquisa por título e descrição.
-- Filtros por status, prioridade e data de vencimento.
-- Dashboard com total geral e totais por status.
+- Filtros por status, prioridade, responsável e data de vencimento.
+- Dashboard com total geral, totais por status e tarefas atrasadas.
 - Histórico de alterações por tarefa.
 - Exclusão com confirmação na interface e remoção lógica das consultas.
 - Interface responsiva.
