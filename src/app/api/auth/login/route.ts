@@ -12,13 +12,13 @@ export async function POST(request: Request) {
     });
 
     if (!user) {
-      return jsonError("E-mail ou senha invalidos.", 401);
+      return jsonError("E-mail ou senha inválidos.", 401);
     }
 
     const passwordMatches = await bcrypt.compare(body.password, user.passwordHash);
 
     if (!passwordMatches) {
-      return jsonError("E-mail ou senha invalidos.", 401);
+      return jsonError("E-mail ou senha inválidos.", 401);
     }
 
     await createSession(user.id);

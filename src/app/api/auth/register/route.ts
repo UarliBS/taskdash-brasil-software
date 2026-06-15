@@ -27,7 +27,7 @@ export async function POST(request: Request) {
       error instanceof Prisma.PrismaClientKnownRequestError &&
       error.code === "P2002"
     ) {
-      return jsonError("Este e-mail ja esta cadastrado.", 409);
+      return jsonError("Este e-mail já está cadastrado.", 409);
     }
 
     return validationError(error);

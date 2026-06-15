@@ -18,7 +18,7 @@ export async function GET(request: Request) {
   const user = await getCurrentUser();
 
   if (!user) {
-    return jsonError("Acesso nao autorizado.", 401);
+    return jsonError("Acesso não autorizado.", 401);
   }
 
   try {
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
       const dueDate = parseDueDate(filters.dueDate);
 
       if (!dueDate) {
-        throw new Error("Data de vencimento invalida.");
+        throw new Error("Data de vencimento inválida.");
       }
 
       where.dueDate = {
@@ -110,7 +110,7 @@ export async function POST(request: Request) {
   const user = await getCurrentUser();
 
   if (!user) {
-    return jsonError("Acesso nao autorizado.", 401);
+    return jsonError("Acesso não autorizado.", 401);
   }
 
   try {

@@ -22,7 +22,7 @@ export async function GET(_request: Request, context: RouteContext) {
   const { id } = await context.params;
 
   if (!user) {
-    return jsonError("Acesso nao autorizado.", 401);
+    return jsonError("Acesso não autorizado.", 401);
   }
 
   const task = await prisma.task.findFirst({
@@ -42,7 +42,7 @@ export async function GET(_request: Request, context: RouteContext) {
   });
 
   if (!task) {
-    return jsonError("Tarefa nao encontrada.", 404);
+    return jsonError("Tarefa não encontrada.", 404);
   }
 
   return Response.json({ task });
@@ -53,7 +53,7 @@ export async function PATCH(request: Request, context: RouteContext) {
   const { id } = await context.params;
 
   if (!user) {
-    return jsonError("Acesso nao autorizado.", 401);
+    return jsonError("Acesso não autorizado.", 401);
   }
 
   try {
@@ -67,7 +67,7 @@ export async function PATCH(request: Request, context: RouteContext) {
     });
 
     if (!existingTask) {
-      return jsonError("Tarefa nao encontrada.", 404);
+      return jsonError("Tarefa não encontrada.", 404);
     }
 
     const statusChanged = existingTask.status !== body.status;
@@ -76,7 +76,7 @@ export async function PATCH(request: Request, context: RouteContext) {
       statusChanged &&
       !allowedStatusTransitions[existingTask.status].includes(body.status)
     ) {
-      return jsonError("Transicao de status nao permitida.", 422);
+      return jsonError("Transição de status não permitida.", 422);
     }
 
     const changeType = statusChanged ? "STATUS_CHANGED" : "UPDATED";
@@ -123,7 +123,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
   const { id } = await context.params;
 
   if (!user) {
-    return jsonError("Acesso nao autorizado.", 401);
+    return jsonError("Acesso não autorizado.", 401);
   }
 
   const existingTask = await prisma.task.findFirst({
@@ -135,7 +135,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
   });
 
   if (!existingTask) {
-    return jsonError("Tarefa nao encontrada.", 404);
+    return jsonError("Tarefa não encontrada.", 404);
   }
 
   await prisma.task.update({
@@ -145,7 +145,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
       histories: {
         create: {
           changeType: "DELETED",
-          description: "Tarefa excluida.",
+          description: "Tarefa excluída.",
           userId: user.id,
         },
       },

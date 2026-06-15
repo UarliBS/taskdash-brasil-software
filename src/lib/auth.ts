@@ -10,7 +10,7 @@ function getSecret() {
   const secret = process.env.AUTH_SECRET;
 
   if (!secret) {
-    throw new Error("AUTH_SECRET nao foi configurado.");
+    throw new Error("AUTH_SECRET não foi configurado.");
   }
 
   return new TextEncoder().encode(secret);

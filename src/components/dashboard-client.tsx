@@ -66,21 +66,21 @@ const emptyCounts: DashboardCounts = {
 
 const priorityLabels: Record<Priority, string> = {
   LOW: "Baixa",
-  MEDIUM: "Media",
+  MEDIUM: "Média",
   HIGH: "Alta",
 };
 
 const statusLabels: Record<TaskStatus, string> = {
   PENDING: "Pendente",
   IN_PROGRESS: "Em andamento",
-  DONE: "Concluida",
+  DONE: "Concluída",
 };
 
 const historyLabels: Record<HistoryType, string> = {
-  CREATED: "Criacao",
-  UPDATED: "Atualizacao",
-  STATUS_CHANGED: "Mudanca de status",
-  DELETED: "Exclusao",
+  CREATED: "Criação",
+  UPDATED: "Atualização",
+  STATUS_CHANGED: "Mudança de status",
+  DELETED: "Exclusão",
 };
 
 const initialForm = {
@@ -146,7 +146,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
     setLoading(false);
 
     if (!response.ok) {
-      setError(data.message ?? "Nao foi possivel carregar as tarefas.");
+      setError(data.message ?? "Não foi possível carregar as tarefas.");
       return;
     }
 
@@ -188,7 +188,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
     setSaving(false);
 
     if (!response.ok) {
-      setError(data.message ?? "Nao foi possivel salvar a tarefa.");
+      setError(data.message ?? "Não foi possível salvar a tarefa.");
       return;
     }
 
@@ -207,7 +207,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
 
     if (!response.ok) {
       const data = await response.json().catch(() => ({}));
-      setError(data.message ?? "Nao foi possivel excluir a tarefa.");
+      setError(data.message ?? "Não foi possível excluir a tarefa.");
       return;
     }
 
@@ -262,7 +262,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
         />
         <Metric
           icon={<TrendingUp size={20} />}
-          label="Concluidas"
+          label="Concluídas"
           value={dashboard.DONE}
           tone="success"
         />
@@ -291,7 +291,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
             </label>
 
             <label>
-              Descricao
+              Descrição
               <textarea
                 value={form.description}
                 rows={4}
@@ -364,7 +364,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
               <Search size={17} />
               <input
                 value={filters.q}
-                placeholder="Pesquisar por titulo ou descricao"
+                placeholder="Pesquisar por título ou descrição"
                 onChange={(event) => setFilters({ ...filters, q: event.target.value })}
               />
             </label>
@@ -424,13 +424,13 @@ export function DashboardClient({ user }: DashboardClientProps) {
                 <span>Status</span>
                 <span>Prioridade</span>
                 <span>Vencimento</span>
-                <span>Acoes</span>
+                <span>Ações</span>
               </div>
               {tasks.map((task) => (
                 <article className="task-row" key={task.id}>
                   <div>
                     <strong>{task.title}</strong>
-                    <p>{task.description || "Sem descricao"}</p>
+                    <p>{task.description || "Sem descrição"}</p>
                   </div>
                   <span className={`pill status-${task.status.toLowerCase()}`}>
                     {statusLabels[task.status]}
@@ -501,10 +501,10 @@ export function DashboardClient({ user }: DashboardClientProps) {
             </div>
 
             <p className="description-block">
-              {selectedTask.description || "Sem descricao informada."}
+              {selectedTask.description || "Sem descrição informada."}
             </p>
 
-            <h3>Historico</h3>
+            <h3>Histórico</h3>
             <div className="history-list">
               {selectedTask.histories.map((history) => (
                 <div className="history-item" key={history.id}>

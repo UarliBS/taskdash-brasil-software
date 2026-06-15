@@ -13,18 +13,18 @@ Sistema web de gerenciamento de tarefas desenvolvido para o desafio tecnico do P
 
 ## Requisitos Atendidos
 
-- Cadastro de usuario com nome, e-mail unico e senha minima de 8 caracteres.
+- Cadastro de usuário com nome, e-mail único e senha mínima de 8 caracteres.
 - Login e logout.
 - Senhas armazenadas com hash bcrypt.
-- Rotas internas protegidas por autenticacao.
-- CRUD de tarefas por usuario autenticado.
-- Prioridades: Baixa, Media e Alta.
-- Status: Pendente, Em andamento e Concluida.
+- Rotas internas protegidas por autenticação.
+- CRUD de tarefas por usuário autenticado.
+- Prioridades: Baixa, Média e Alta.
+- Status: Pendente, Em andamento e Concluída.
 - Transicoes de status validadas no backend.
-- Pesquisa por titulo e descricao.
+- Pesquisa por título e descrição.
 - Filtros por status, prioridade e data de vencimento.
 - Dashboard com total geral e totais por status.
-- Historico de alteracoes por tarefa.
+- Histórico de alterações por tarefa.
 - Exclusao com confirmacao na interface e remocao logica das consultas.
 - Interface responsiva.
 
@@ -85,6 +85,6 @@ AUTH_COOKIE_SECURE="false"
 
 Use `AUTH_COOKIE_SECURE="true"` apenas em ambientes HTTPS.
 
-## Observacoes de Escopo
+## Observações de Escopo
 
-A recuperacao de senha por e-mail foi tratada como opcional, pois o documento usa "podera disponibilizar". O MVP prioriza autenticacao, regras de tarefa, dashboard, filtros e historico.
+A recuperação de senha por e-mail foi tratada como opcional, pois o documento usa "poderá disponibilizar". O MVP prioriza autenticação, regras de tarefa, dashboard, filtros e histórico.

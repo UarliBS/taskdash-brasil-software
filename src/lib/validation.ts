@@ -3,24 +3,24 @@ import { z } from "zod";
 
 export const registerSchema = z.object({
   name: z.string().trim().min(1, "Informe o nome completo."),
-  email: z.string().trim().email("Informe um e-mail valido.").toLowerCase(),
-  password: z.string().trim().min(8, "A senha deve ter no minimo 8 caracteres."),
+  email: z.string().trim().email("Informe um e-mail válido.").toLowerCase(),
+  password: z.string().trim().min(8, "A senha deve ter no mínimo 8 caracteres."),
 });
 
 export const loginSchema = z.object({
-  email: z.string().trim().email("Informe um e-mail valido.").toLowerCase(),
+  email: z.string().trim().email("Informe um e-mail válido.").toLowerCase(),
   password: z.string().min(1, "Informe a senha."),
 });
 
 export const taskSchema = z.object({
-  title: z.string().trim().min(1, "Informe o titulo da tarefa."),
+  title: z.string().trim().min(1, "Informe o título da tarefa."),
   description: z.string().trim().optional().nullable(),
   dueDate: z.string().optional().nullable(),
   priority: z.nativeEnum(Priority, {
-    errorMap: () => ({ message: "Prioridade invalida." }),
+    errorMap: () => ({ message: "Prioridade inválida." }),
   }),
   status: z.nativeEnum(TaskStatus, {
-    errorMap: () => ({ message: "Status invalido." }),
+    errorMap: () => ({ message: "Status inválido." }),
   }),
 });
 
@@ -39,7 +39,7 @@ export function parseDueDate(value?: string | null) {
   const date = new Date(`${value}T00:00:00.000Z`);
 
   if (Number.isNaN(date.getTime())) {
-    throw new Error("Data de vencimento invalida.");
+    throw new Error("Data de vencimento inválida.");
   }
 
   return date;

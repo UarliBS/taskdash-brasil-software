@@ -40,7 +40,7 @@ export function AuthPanel({ mode }: AuthPanelProps) {
     setLoading(false);
 
     if (!response.ok) {
-      setError(data.message ?? "Nao foi possivel autenticar.");
+      setError(data.message ?? "Não foi possível autenticar.");
       return;
     }
 
@@ -67,7 +67,7 @@ export function AuthPanel({ mode }: AuthPanelProps) {
           </div>
 
           <div className="auth-checklist">
-            {["Acesso protegido", "Dashboard resumido", "Historico por tarefa"].map(
+            {["Acesso protegido", "Dashboard resumido", "Histórico por tarefa"].map(
               (item) => (
                 <div key={item}>
                   <CheckCircle2 size={18} />
@@ -89,7 +89,7 @@ export function AuthPanel({ mode }: AuthPanelProps) {
             </div>
             <div className="auth-preview-row">
               <span>Revisar filtros</span>
-              <b>Media</b>
+              <b>Média</b>
             </div>
             <div className="auth-preview-progress">
               <span />
@@ -111,7 +111,7 @@ export function AuthPanel({ mode }: AuthPanelProps) {
             <h2 id="auth-title">{isRegister ? "Criar conta" : "Entrar"}</h2>
             <p className="muted">
               {isRegister
-                ? "Cadastre-se para organizar suas tarefas em um painel unico."
+                ? "Cadastre-se para organizar suas tarefas em um painel único."
                 : "Acesse seu painel de tarefas, filtros e indicadores."}
             </p>
           </div>
@@ -133,7 +133,7 @@ export function AuthPanel({ mode }: AuthPanelProps) {
                 <Mail size={18} />
                 <input name="email" type="email" autoComplete="email" required />
               </span>
-              <span className="field-hint">Informe um e-mail valido.</span>
+              <span className="field-hint">Informe um e-mail válido.</span>
             </label>
 
             <label className="auth-field">
@@ -149,7 +149,7 @@ export function AuthPanel({ mode }: AuthPanelProps) {
                 />
               </span>
               <span className="field-hint">
-                A senha deve ter no minimo 8 caracteres.
+                A senha deve ter no mínimo 8 caracteres.
               </span>
             </label>
 
@@ -166,7 +166,7 @@ export function AuthPanel({ mode }: AuthPanelProps) {
           </form>
 
           <p className="auth-switch">
-            {isRegister ? "Ja possui conta?" : "Ainda nao possui conta?"}{" "}
+            {isRegister ? "Já possui conta?" : "Ainda não possui conta?"}{" "}
             <Link href={isRegister ? "/login" : "/register"}>
               {isRegister ? "Entrar" : "Criar conta"}
             </Link>

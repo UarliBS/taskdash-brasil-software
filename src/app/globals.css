@@ -936,22 +936,34 @@ select:focus {
   transform: translateY(-1px);
 }
 
-.status-pending,
+.status-pending {
+  background: #fef3c7;
+  color: #854d0e;
+}
+
+.status-in_progress {
+  background: #ccfbf1;
+  color: #0f766e;
+}
+
+.status-done {
+  background: #ecfdf3;
+  color: #064e3b;
+}
+
+.priority-low {
+  background: #e8f5ef;
+  color: #166534;
+}
+
 .priority-medium {
   background: #fef3c7;
   color: #854d0e;
 }
 
-.status-in_progress,
 .priority-high {
-  background: #ccfbf1;
-  color: #0f766e;
-}
-
-.status-done,
-.priority-low {
-  background: #ecfdf3;
-  color: #064e3b;
+  background: #fee2e2;
+  color: #991b1b;
 }
 
 .row-actions {
