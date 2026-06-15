@@ -106,7 +106,8 @@ export function DashboardClient({ user }: DashboardClientProps) {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [taskToDelete, setTaskToDelete] = useState<Task | null>(null);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
-  const [form, setForm] = useState(initialForm);
+  const [createForm, setCreateForm] = useState(initialForm);
+  const [editForm, setEditForm] = useState(initialForm);
   const [filters, setFilters] = useState({
     q: "",
     status: "",
@@ -172,14 +173,20 @@ export function DashboardClient({ user }: DashboardClientProps) {
     setDashboard(data.dashboard ?? emptyCounts);
   }
 
-  function resetForm() {
+  function resetCreateForm() {
+    setCreateForm(initialForm);
+  }
+
+  function closeEditModal() {
     setEditingTask(null);
-    setForm(initialForm);
+    setEditForm(initialForm);
+    setError("");
   }
 
   function startEdit(task: Task) {
+    setError("");
     setEditingTask(task);
-    setForm({
+    setEditForm({
       title: task.title,
       description: task.description ?? "",
       dueDate: toInputDate(task.dueDate),
@@ -188,19 +195,16 @@ export function DashboardClient({ user }: DashboardClientProps) {
     });
   }
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleCreateSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setSaving(true);
     setError("");
 
-    const response = await fetch(
-      editingTask ? `/api/tasks/${editingTask.id}` : "/api/tasks",
-      {
-        method: editingTask ? "PATCH" : "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
-      },
-    );
+    const response = await fetch("/api/tasks", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(createForm),
+    });
 
     const data = await response.json().catch(() => ({}));
     setSaving(false);
@@ -210,7 +214,35 @@ export function DashboardClient({ user }: DashboardClientProps) {
       return;
     }
 
-    resetForm();
+    resetCreateForm();
+    await loadTasks();
+  }
+
+  async function handleEditSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    if (!editingTask) {
+      return;
+    }
+
+    setSaving(true);
+    setError("");
+
+    const response = await fetch(`/api/tasks/${editingTask.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editForm),
+    });
+
+    const data = await response.json().catch(() => ({}));
+    setSaving(false);
+
+    if (!response.ok) {
+      setError(data.message ?? "Não foi possível salvar a tarefa.");
+      return;
+    }
+
+    closeEditModal();
     await loadTasks();
   }
 
@@ -289,21 +321,17 @@ export function DashboardClient({ user }: DashboardClientProps) {
       <section className="workspace">
         <aside className="task-form-panel">
           <div className="section-heading">
-            <h2>{editingTask ? "Editar tarefa" : "Nova tarefa"}</h2>
-            {editingTask ? (
-              <button className="ghost-button" type="button" onClick={resetForm}>
-                <X size={16} />
-                Cancelar
-              </button>
-            ) : null}
+            <h2>Nova tarefa</h2>
           </div>
 
-          <form className="stack" onSubmit={handleSubmit}>
+          <form className="stack" onSubmit={handleCreateSubmit}>
             <label>
               Título
               <input
-                value={form.title}
-                onChange={(event) => setForm({ ...form, title: event.target.value })}
+                value={createForm.title}
+                onChange={(event) =>
+                  setCreateForm({ ...createForm, title: event.target.value })
+                }
                 required
               />
             </label>
@@ -311,10 +339,10 @@ export function DashboardClient({ user }: DashboardClientProps) {
             <label>
               Descrição
               <textarea
-                value={form.description}
+                value={createForm.description}
                 rows={4}
                 onChange={(event) =>
-                  setForm({ ...form, description: event.target.value })
+                  setCreateForm({ ...createForm, description: event.target.value })
                 }
               />
             </label>
@@ -323,8 +351,10 @@ export function DashboardClient({ user }: DashboardClientProps) {
               Data de vencimento
               <input
                 type="date"
-                value={form.dueDate}
-                onChange={(event) => setForm({ ...form, dueDate: event.target.value })}
+                value={createForm.dueDate}
+                onChange={(event) =>
+                  setCreateForm({ ...createForm, dueDate: event.target.value })
+                }
               />
             </label>
 
@@ -332,9 +362,12 @@ export function DashboardClient({ user }: DashboardClientProps) {
               <label>
                 Prioridade
                 <select
-                  value={form.priority}
+                  value={createForm.priority}
                   onChange={(event) =>
-                    setForm({ ...form, priority: event.target.value as Priority })
+                    setCreateForm({
+                      ...createForm,
+                      priority: event.target.value as Priority,
+                    })
                   }
                 >
                   {Object.entries(priorityLabels).map(([value, label]) => (
@@ -348,9 +381,12 @@ export function DashboardClient({ user }: DashboardClientProps) {
               <label>
                 Status
                 <select
-                  value={form.status}
+                  value={createForm.status}
                   onChange={(event) =>
-                    setForm({ ...form, status: event.target.value as TaskStatus })
+                    setCreateForm({
+                      ...createForm,
+                      status: event.target.value as TaskStatus,
+                    })
                   }
                 >
                   {Object.entries(statusLabels).map(([value, label]) => (
@@ -365,8 +401,8 @@ export function DashboardClient({ user }: DashboardClientProps) {
             {error ? <p className="form-error">{error}</p> : null}
 
             <button className="primary-button" type="submit" disabled={saving}>
-              {editingTask ? <Save size={18} /> : <Plus size={18} />}
-              {saving ? "Salvando..." : editingTask ? "Salvar tarefa" : "Criar tarefa"}
+              <Plus size={18} />
+              {saving ? "Salvando..." : "Criar tarefa"}
             </button>
           </form>
         </aside>
@@ -572,6 +608,123 @@ export function DashboardClient({ user }: DashboardClientProps) {
                 </div>
               ))}
             </div>
+          </section>
+        </div>
+      ) : null}
+
+      {editingTask ? (
+        <div className="modal-backdrop" role="presentation">
+          <section
+            className="task-modal edit-task-modal"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-task-title"
+          >
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">Editar</p>
+                <h2 id="edit-task-title">Editar tarefa</h2>
+              </div>
+              <button
+                className="icon-button"
+                type="button"
+                onClick={closeEditModal}
+                title="Fechar"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <form className="stack" onSubmit={handleEditSubmit}>
+              <label>
+                Título
+                <input
+                  value={editForm.title}
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, title: event.target.value })
+                  }
+                  required
+                />
+              </label>
+
+              <label>
+                Descrição
+                <textarea
+                  value={editForm.description}
+                  rows={4}
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, description: event.target.value })
+                  }
+                />
+              </label>
+
+              <label>
+                Data de vencimento
+                <input
+                  type="date"
+                  value={editForm.dueDate}
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, dueDate: event.target.value })
+                  }
+                />
+              </label>
+
+              <div className="field-grid">
+                <label>
+                  Prioridade
+                  <select
+                    value={editForm.priority}
+                    onChange={(event) =>
+                      setEditForm({
+                        ...editForm,
+                        priority: event.target.value as Priority,
+                      })
+                    }
+                  >
+                    {Object.entries(priorityLabels).map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label>
+                  Status
+                  <select
+                    value={editForm.status}
+                    onChange={(event) =>
+                      setEditForm({
+                        ...editForm,
+                        status: event.target.value as TaskStatus,
+                      })
+                    }
+                  >
+                    {Object.entries(statusLabels).map(([value, label]) => (
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+
+              {error ? <p className="form-error">{error}</p> : null}
+
+              <div className="modal-form-actions">
+                <button
+                  className="ghost-button"
+                  type="button"
+                  onClick={closeEditModal}
+                >
+                  Cancelar
+                </button>
+                <button className="primary-button" type="submit" disabled={saving}>
+                  <Save size={18} />
+                  {saving ? "Salvando..." : "Salvar tarefa"}
+                </button>
+              </div>
+            </form>
           </section>
         </div>
       ) : null}

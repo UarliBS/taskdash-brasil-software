@@ -1113,6 +1113,31 @@ select:focus {
   animation: modal-in 220ms ease both;
 }
 
+.edit-task-modal {
+  max-width: 560px;
+  width: min(100%, 560px);
+}
+
+.task-modal input,
+.task-modal textarea,
+.task-modal select {
+  background: #fbfffd;
+  border-color: rgba(6, 78, 59, 0.16);
+}
+
+.task-modal input:focus,
+.task-modal textarea:focus,
+.task-modal select:focus {
+  border-color: #064e3b;
+  box-shadow: 0 0 0 3px rgba(6, 78, 59, 0.12);
+}
+
+.modal-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
 .confirm-modal {
   background: rgba(248, 255, 251, 0.98);
   border: 1px solid rgba(180, 35, 24, 0.18);
@@ -1398,7 +1423,12 @@ select:focus {
     flex-direction: column-reverse;
   }
 
-  .confirm-actions button {
+  .confirm-actions button,
+  .modal-form-actions button {
     width: 100%;
+  }
+
+  .modal-form-actions {
+    flex-direction: column-reverse;
   }
 }
