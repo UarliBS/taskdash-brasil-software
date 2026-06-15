@@ -23,8 +23,9 @@ export const passwordResetConfirmSchema = z.object({
 
 export const taskSchema = z.object({
   title: z.string().trim().min(1, "Informe o título da tarefa."),
+  responsible: z.string().trim().min(1, "Informe o responsável pela tarefa."),
   description: z.string().trim().optional().nullable(),
-  dueDate: z.string().optional().nullable(),
+  dueDate: z.string().trim().min(1, "Informe a data de vencimento."),
   priority: z.nativeEnum(Priority, {
     errorMap: () => ({ message: "Prioridade inválida." }),
   }),
@@ -35,6 +36,7 @@ export const taskSchema = z.object({
 
 export const taskFiltersSchema = z.object({
   q: z.string().optional(),
+  responsible: z.string().optional(),
   status: z.nativeEnum(TaskStatus).optional(),
   priority: z.nativeEnum(Priority).optional(),
   dueDate: z.string().optional(),
@@ -49,6 +51,16 @@ export function parseDueDate(value?: string | null) {
 
   if (Number.isNaN(date.getTime())) {
     throw new Error("Data de vencimento inválida.");
+  }
+
+  return date;
+}
+
+export function parseRequiredDueDate(value: string) {
+  const date = parseDueDate(value);
+
+  if (!date) {
+    throw new Error("Data de vencimento invalida.");
   }
 
   return date;

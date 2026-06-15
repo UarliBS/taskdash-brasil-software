@@ -42,7 +42,8 @@ model Task {
   id          String        @id @default(cuid())
   title       String
   description String?
-  dueDate     DateTime?
+  responsible String
+  dueDate     DateTime
   priority    Priority
   status      TaskStatus
   deletedAt   DateTime?
@@ -54,6 +55,7 @@ model Task {
 
   @@index([userId, status])
   @@index([userId, priority])
+  @@index([userId, responsible])
   @@index([userId, dueDate])
 }
 

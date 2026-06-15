@@ -3,7 +3,7 @@ import { getCurrentUser } from "@/lib/auth";
 import { jsonError, validationError } from "@/lib/http";
 import { statusLabels } from "@/lib/labels";
 import { prisma } from "@/lib/prisma";
-import { parseDueDate, taskSchema } from "@/lib/validation";
+import { parseRequiredDueDate, taskSchema } from "@/lib/validation";
 
 type RouteContext = {
   params: Promise<{
@@ -90,8 +90,9 @@ export async function PATCH(request: Request, context: RouteContext) {
       where: { id: existingTask.id },
       data: {
         title: body.title,
+        responsible: body.responsible,
         description: body.description || null,
-        dueDate: parseDueDate(body.dueDate),
+        dueDate: parseRequiredDueDate(body.dueDate),
         priority: body.priority,
         status: body.status,
         histories: {

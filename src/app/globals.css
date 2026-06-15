@@ -719,7 +719,7 @@ select:focus {
 .metrics-grid {
   display: grid;
   gap: 0.9rem;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   margin: 0 auto 1.2rem;
   max-width: 1420px;
 }
@@ -803,9 +803,14 @@ select:focus {
   --metric-accent: #064e3b;
 }
 
+.metric-danger {
+  --metric-accent: #b42318;
+}
+
 .metric-warning::before,
 .metric-info::before,
-.metric-success::before {
+.metric-success::before,
+.metric-danger::before {
   background: linear-gradient(180deg, var(--metric-accent), #0f766e);
 }
 
@@ -903,7 +908,7 @@ select:focus {
 .filters {
   display: grid;
   gap: 0.65rem;
-  grid-template-columns: minmax(220px, 1fr) minmax(150px, 180px) minmax(150px, 180px) minmax(145px, 170px);
+  grid-template-columns: minmax(210px, 1fr) minmax(145px, 170px) minmax(135px, 160px) minmax(135px, 160px) minmax(145px, 170px);
   margin-bottom: 1rem;
 }
 
@@ -1027,7 +1032,7 @@ select:focus {
   border-top: 1px solid rgba(6, 78, 59, 0.1);
   display: grid;
   gap: 0.8rem;
-  grid-template-columns: minmax(220px, 1.5fr) 135px 115px 120px 142px;
+  grid-template-columns: minmax(190px, 1.35fr) 130px 135px 115px 120px 142px;
   min-height: 74px;
   padding: 0.8rem;
   transition:
@@ -1069,6 +1074,13 @@ select:focus {
   -webkit-box-orient: vertical;
   margin-top: 0.25rem;
   overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.responsible-cell {
+  color: #315f51;
+  font-size: 0.86rem;
+  font-weight: 800;
   overflow-wrap: anywhere;
 }
 
@@ -1239,7 +1251,7 @@ select:focus {
 .detail-grid {
   display: grid;
   gap: 0.8rem;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
 }
 
 .detail-item {

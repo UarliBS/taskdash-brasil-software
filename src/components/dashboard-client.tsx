@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  AlertTriangle,
   CheckCircle2,
   ChevronLeft,
   ChevronRight,
@@ -16,6 +17,7 @@ import {
   TimerReset,
   Trash2,
   TrendingUp,
+  UserRound,
   X,
 } from "lucide-react";
 import { FormEvent, useEffect, useMemo, useState } from "react";
@@ -44,6 +46,7 @@ type Task = {
   id: string;
   title: string;
   description: string | null;
+  responsible: string;
   dueDate: string | null;
   priority: Priority;
   status: TaskStatus;
@@ -57,6 +60,7 @@ type DashboardCounts = {
   PENDING: number;
   IN_PROGRESS: number;
   DONE: number;
+  OVERDUE: number;
 };
 
 const emptyCounts: DashboardCounts = {
@@ -64,6 +68,7 @@ const emptyCounts: DashboardCounts = {
   PENDING: 0,
   IN_PROGRESS: 0,
   DONE: 0,
+  OVERDUE: 0,
 };
 
 const priorityLabels: Record<Priority, string> = {
@@ -87,6 +92,7 @@ const historyLabels: Record<HistoryType, string> = {
 
 const initialForm = {
   title: "",
+  responsible: "",
   description: "",
   dueDate: "",
   priority: "MEDIUM" as Priority,
@@ -112,6 +118,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
     q: "",
     status: "",
     priority: "",
+    responsible: "",
     dueDate: "",
   });
   const [loading, setLoading] = useState(true);
@@ -188,6 +195,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
     setEditingTask(task);
     setEditForm({
       title: task.title,
+      responsible: task.responsible,
       description: task.description ?? "",
       dueDate: toInputDate(task.dueDate),
       priority: task.priority,
@@ -316,6 +324,12 @@ export function DashboardClient({ user }: DashboardClientProps) {
           value={dashboard.DONE}
           tone="success"
         />
+        <Metric
+          icon={<AlertTriangle size={20} />}
+          label="Atrasadas"
+          value={dashboard.OVERDUE}
+          tone="danger"
+        />
       </section>
 
       <section className="workspace">
@@ -331,6 +345,17 @@ export function DashboardClient({ user }: DashboardClientProps) {
                 value={createForm.title}
                 onChange={(event) =>
                   setCreateForm({ ...createForm, title: event.target.value })
+                }
+                required
+              />
+            </label>
+
+            <label>
+              Responsável
+              <input
+                value={createForm.responsible}
+                onChange={(event) =>
+                  setCreateForm({ ...createForm, responsible: event.target.value })
                 }
                 required
               />
@@ -355,6 +380,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                 onChange={(event) =>
                   setCreateForm({ ...createForm, dueDate: event.target.value })
                 }
+                required
               />
             </label>
 
@@ -425,6 +451,17 @@ export function DashboardClient({ user }: DashboardClientProps) {
               />
             </label>
 
+            <label className="search-field">
+              <UserRound size={17} />
+              <input
+                value={filters.responsible}
+                placeholder="Responsável"
+                onChange={(event) =>
+                  updateFilters({ ...filters, responsible: event.target.value })
+                }
+              />
+            </label>
+
             <label>
               <Filter size={16} />
               <select
@@ -477,6 +514,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
             <div className="task-table">
               <div className="task-row task-row-head">
                 <span>Título</span>
+                <span>Responsável</span>
                 <span>Status</span>
                 <span>Prioridade</span>
                 <span>Vencimento</span>
@@ -488,6 +526,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                     <strong>{task.title}</strong>
                     <p>{task.description || "Sem descrição"}</p>
                   </div>
+                  <span className="responsible-cell">{task.responsible}</span>
                   <span className={`pill status-${task.status.toLowerCase()}`}>
                     {statusLabels[task.status]}
                   </span>
@@ -581,6 +620,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
 
             <div className="detail-grid">
               <Detail label="Status" value={statusLabels[selectedTask.status]} />
+              <Detail label="Responsável" value={selectedTask.responsible} />
               <Detail
                 label="Prioridade"
                 value={priorityLabels[selectedTask.priority]}
@@ -648,6 +688,17 @@ export function DashboardClient({ user }: DashboardClientProps) {
               </label>
 
               <label>
+                Responsável
+                <input
+                  value={editForm.responsible}
+                  onChange={(event) =>
+                    setEditForm({ ...editForm, responsible: event.target.value })
+                  }
+                  required
+                />
+              </label>
+
+              <label>
                 Descrição
                 <textarea
                   value={editForm.description}
@@ -666,6 +717,7 @@ export function DashboardClient({ user }: DashboardClientProps) {
                   onChange={(event) =>
                     setEditForm({ ...editForm, dueDate: event.target.value })
                   }
+                  required
                 />
               </label>
 
@@ -782,7 +834,7 @@ function Metric({
   icon: ReactNode;
   label: string;
   value: number;
-  tone?: "neutral" | "warning" | "info" | "success";
+  tone?: "neutral" | "warning" | "info" | "success" | "danger";
 }) {
   return (
     <article className={`metric-card metric-${tone}`}>

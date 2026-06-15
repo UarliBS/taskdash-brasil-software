@@ -2,7 +2,12 @@ import { Prisma } from "@prisma/client";
 import { getCurrentUser } from "@/lib/auth";
 import { jsonError, validationError } from "@/lib/http";
 import { prisma } from "@/lib/prisma";
-import { parseDueDate, taskFiltersSchema, taskSchema } from "@/lib/validation";
+import {
+  parseDueDate,
+  parseRequiredDueDate,
+  taskFiltersSchema,
+  taskSchema,
+} from "@/lib/validation";
 
 function endOfDay(dateValue: string) {
   const date = new Date(`${dateValue}T23:59:59.999Z`);
@@ -11,6 +16,12 @@ function endOfDay(dateValue: string) {
     throw new Error("Data de vencimento invalida.");
   }
 
+  return date;
+}
+
+function startOfToday() {
+  const date = new Date();
+  date.setUTCHours(0, 0, 0, 0);
   return date;
 }
 
@@ -25,6 +36,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const filters = taskFiltersSchema.parse({
       q: searchParams.get("q") || undefined,
+      responsible: searchParams.get("responsible") || undefined,
       status: searchParams.get("status") || undefined,
       priority: searchParams.get("priority") || undefined,
       dueDate: searchParams.get("dueDate") || undefined,
@@ -46,6 +58,10 @@ export async function GET(request: Request) {
       where.status = filters.status;
     }
 
+    if (filters.responsible) {
+      where.responsible = { contains: filters.responsible, mode: "insensitive" };
+    }
+
     if (filters.priority) {
       where.priority = filters.priority;
     }
@@ -63,7 +79,7 @@ export async function GET(request: Request) {
       };
     }
 
-    const [tasks, dashboard] = await Promise.all([
+    const [tasks, dashboard, overdueCount] = await Promise.all([
       prisma.task.findMany({
         where,
         include: {
@@ -86,6 +102,14 @@ export async function GET(request: Request) {
         },
         _count: { _all: true },
       }),
+      prisma.task.count({
+        where: {
+          userId: user.id,
+          deletedAt: null,
+          status: { not: "DONE" },
+          dueDate: { lt: startOfToday() },
+        },
+      }),
     ]);
 
     const counts = {
@@ -93,6 +117,7 @@ export async function GET(request: Request) {
       PENDING: 0,
       IN_PROGRESS: 0,
       DONE: 0,
+      OVERDUE: overdueCount,
     };
 
     for (const item of dashboard) {
@@ -118,8 +143,9 @@ export async function POST(request: Request) {
     const task = await prisma.task.create({
       data: {
         title: body.title,
+        responsible: body.responsible,
         description: body.description || null,
-        dueDate: parseDueDate(body.dueDate),
+        dueDate: parseRequiredDueDate(body.dueDate),
         priority: body.priority,
         status: body.status,
         userId: user.id,
