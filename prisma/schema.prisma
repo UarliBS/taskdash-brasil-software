@@ -70,6 +70,7 @@ model TaskHistory {
   user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([taskId, createdAt])
+  @@index([userId])
 }
 
 model PasswordResetToken {
