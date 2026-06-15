@@ -100,6 +100,64 @@ Use `AUTH_COOKIE_SECURE="true"` apenas em ambientes HTTPS.
 
 Para envio real de recuperação de senha, configure `RESEND_API_KEY` e um remetente verificado em `RESEND_FROM_EMAIL`. Em ambiente local com `APP_URL` apontando para `localhost`, a API retorna um link de preview para facilitar testes sem disparar e-mail real.
 
+## Deploy com Supabase e Vercel
+
+### 1. Banco de dados no Supabase
+
+Crie um projeto no Supabase e copie a connection string do PostgreSQL. Para produção na Vercel, prefira a URL com pooler quando disponível.
+
+Rode as migrations no banco do Supabase:
+
+```powershell
+$env:DATABASE_URL="postgresql://usuario:senha@host:porta/database?schema=public"
+npx.cmd prisma migrate deploy
+```
+
+No terminal Linux/macOS:
+
+```bash
+DATABASE_URL="postgresql://usuario:senha@host:porta/database?schema=public" npx prisma migrate deploy
+```
+
+### 2. Variáveis na Vercel
+
+Configure em **Project Settings > Environment Variables**:
+
+```env
+DATABASE_URL="postgresql://usuario:senha@host:porta/database?schema=public"
+AUTH_SECRET="gere-uma-chave-grande-e-segura"
+AUTH_COOKIE_SECURE="true"
+APP_URL="https://seu-projeto.vercel.app"
+RESEND_API_KEY="sua-chave-do-resend"
+RESEND_FROM_EMAIL="TaskDash <email@seudominio.com>"
+```
+
+Use o mesmo `APP_URL` do domínio final da Vercel. Esse valor é usado para montar o link de recuperação de senha.
+
+### 3. Configuração do build
+
+A Vercel pode usar o comando padrão do projeto:
+
+```bash
+npm run build
+```
+
+O script executa `prisma generate` antes do build do Next.js.
+
+### 4. Resend em produção
+
+Para envio real de e-mails, configure `RESEND_API_KEY` e utilize um remetente/domínio verificado no `RESEND_FROM_EMAIL`. Sem essa configuração, a recuperação de senha não enviará e-mail em produção.
+
+### 5. Checklist pós-deploy
+
+- Criar uma conta nova.
+- Fazer login e logout.
+- Criar, editar, visualizar e excluir uma tarefa.
+- Testar filtros por status, prioridade, responsável e data.
+- Conferir dashboard, incluindo tarefas atrasadas.
+- Solicitar recuperação de senha e abrir o link recebido por e-mail.
+- Confirmar que os cookies funcionam em HTTPS com `AUTH_COOKIE_SECURE="true"`.
+
 ## Observações de Escopo
 
 A recuperação de senha por e-mail foi implementada com token temporário e envio via Resend. O MVP prioriza autenticação, regras de tarefa, dashboard, filtros e histórico.
